@@ -1,8 +1,9 @@
 package basics
 
-import org.scalatest._
+import org.scalatest.flatspec._
+import org.scalatest.matchers._
 
-class HelloWorldSpec extends FlatSpec with Matchers {
+class HelloWorldSpec extends AnyFlatSpec with should.Matchers {
   "square" should "return 4 when called on 2" in {
     HelloWorld.square(2) should be (4.0)
   }
