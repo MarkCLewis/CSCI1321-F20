@@ -7,7 +7,7 @@ This is a basic main for you to start off with.
 */
 object HelloWorld {
 	def main(args: Array[String]): Unit = {
-		println("This is new.")
+		println("This is new for teh second class.")
 		println("What is your name?")
 		val name = readLine().trim()
 		println(s"Hello $name!")
