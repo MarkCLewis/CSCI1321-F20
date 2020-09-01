@@ -1,0 +1,19 @@
+3
+CSI 257
+This is a room with computers and the lingering scent of pain and despair.
+2
+Chair
+Something you sit on.
+Computer
+The most powerful tool in the Universe!
+-1,1,-1,-1,-1,-1
+Hallway
+A long room that connects rooms.
+0
+0,-1,2,-1,-1,-1
+Broadway
+A really big hallway.
+1
+Trash
+Something someone left behind.
+-1,-1,-1,1,-1,-1
