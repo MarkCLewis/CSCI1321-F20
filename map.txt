@@ -1,0 +1,17 @@
+3
+CSI 257
+A room with many computers and the lingering smell of sorrow.
+2
+Chair
+Something you sit on.
+Computer
+The most powerful tool in the Universe!
+-1,1,-1,-1,-1,-1
+Hallway
+This is a long room that connectes other rooms.
+0
+0,-1,2,-1,-1,-1
+Broadway
+A big long hall.
+0
+-1,-1,-1,1,-1,-1
