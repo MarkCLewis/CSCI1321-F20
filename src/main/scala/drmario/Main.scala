@@ -1,10 +1,13 @@
 package drmario
 
+import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.Canvas
 import scalafx.animation.AnimationTimer
+import scalafx.scene.input.KeyEvent
+import scalafx.scene.input.KeyCode
 
 object Main extends JFXApp {
   val canvas = new Canvas(1000, 800)
@@ -16,6 +19,26 @@ object Main extends JFXApp {
     title = "Dr. Mario"
     scene = new Scene(1000, 800) {
       content = canvas
+
+      onKeyPressed = (ke: KeyEvent) => {
+        ke.code match {
+          case KeyCode.Left => board.leftPressed()
+          case KeyCode.Right => board.rightPressed()
+          case KeyCode.Up => board.upPressed()
+          case KeyCode.Down => board.downPressed()
+          case _ =>
+        }
+      }
+
+      onKeyReleased = (ke: KeyEvent) => {
+        ke.code match {
+          case KeyCode.Left => board.leftReleased()
+          case KeyCode.Right => board.rightReleased()
+          case KeyCode.Up => board.upReleased()
+          case KeyCode.Down => board.downReleased()
+          case _ =>
+        }
+      }
 
       var lastTime = -1L
       val timer = AnimationTimer(time => {
@@ -38,9 +61,10 @@ object Main extends JFXApp {
 // X - Draw a pill
 // X - Make the pill fall
 // X - Make pill not fall so fast
-// Make the pill stop falling
-// Make the pill move side to side
+// X - Make the pill move side to side
+// X - Slow down side to side movement
 // Make the pill rotate
+// Make the pill stop falling
 // Make a new pill appear
 // Boarder
 // Scoreboard

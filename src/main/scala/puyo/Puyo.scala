@@ -1,5 +1,5 @@
 package puyo
 
 class Puyo(val x: Int, val y: Int, val color: PuyoColor.Value) extends Yo {
-  def drop(): Puyo = new Puyo(x, y+1, color)
+  def move(dx: Int, dy: Int): Puyo = new Puyo(x + dx, y + dy, color)
 }

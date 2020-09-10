@@ -21,10 +21,20 @@ object Main extends JFXApp {
 
       onKeyPressed = (ke: KeyEvent) => {
         ke.code match {
-          case KeyCode.Left => 
-          case KeyCode.Right => 
-          case KeyCode.Up => 
-          case KeyCode.Down => 
+          case KeyCode.Left => board.leftPressed()
+          case KeyCode.Right => board.rightPressed()
+          case KeyCode.Up => board.upPressed()
+          case KeyCode.Down => board.downPressed()
+          case _ =>
+        }
+      }
+
+      onKeyReleased = (ke: KeyEvent) => {
+        ke.code match {
+          case KeyCode.Left => board.leftReleased()
+          case KeyCode.Right => board.rightReleased()
+          case KeyCode.Up => board.upReleased()
+          case KeyCode.Down => board.downReleased()
           case _ =>
         }
       }
@@ -51,7 +61,8 @@ object Main extends JFXApp {
 // X - Don't draw Yo's above the board
 // X - Make the PuyoChain fall
 // X - Make it fall slowly
-// Move PuyoChain
-// Rotate PuyoChain
+// X - Move PuyoChain
+// X - Move more slowly
+// X - Rotate PuyoChain
 // Make PuyoChain stop
 // Make new PuyoChain appear
