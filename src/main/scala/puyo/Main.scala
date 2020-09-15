@@ -64,5 +64,8 @@ object Main extends JFXApp {
 // X - Move PuyoChain
 // X - Move more slowly
 // X - Rotate PuyoChain
-// Make PuyoChain stop
-// Make new PuyoChain appear
+// X - Respect bounds
+// X - Make PuyoChain stop when it hits something
+// X - Make new PuyoChain appear
+// X - Make unsupported Yos fall
+// Make connected colors go away

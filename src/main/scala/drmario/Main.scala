@@ -63,9 +63,10 @@ object Main extends JFXApp {
 // X - Make pill not fall so fast
 // X - Make the pill move side to side
 // X - Slow down side to side movement
-// Make the pill rotate
-// Make the pill stop falling
-// Make a new pill appear
+// X - Make the pill rotate
+// X - Respect side bounds and bottom
+// X - Make the pill stop falling when it hits other stuff
+// X - Make a new pill appear
 // Boarder
 // Scoreboard
 // 
