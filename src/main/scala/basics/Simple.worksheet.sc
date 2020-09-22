@@ -14,3 +14,7 @@ val capitals = Map("TX" -> "Austin", "CO" -> "Denver", "AZ" -> "Phoenix")
 val i = 2
 
 capitals(stateCodes(i))
+
+for (i <- (1 to 1000).par) yield i*i
+
+"One" -> 1
