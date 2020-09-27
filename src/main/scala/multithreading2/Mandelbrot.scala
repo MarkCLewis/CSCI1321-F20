@@ -1,33 +1,50 @@
 package multithreading2
 
+import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.scene.image.WritableImage
 import scalafx.scene.image.ImageView
 import scalafx.scene.Scene
 import scalafx.scene.paint.Color
+import scalafx.scene.input.MouseEvent
 
 object Mandelbrot extends JFXApp {
   val maxCount = 1000
-
+  val logMax = math.log(maxCount)
+  val rmin = -1.5
+  val rmax = 0.5
+  val imin = -1.0
+  val imax = 1.0
+  
   stage = new JFXApp.PrimaryStage {
     title = "Mandelbrot"
     scene = new Scene(1000, 1000) {
       val image = new WritableImage(1000, 1000)
       content = new ImageView(image)
       val start = System.nanoTime()
-      drawMandel(image, -1.5, 0.5, -1.0, 1.0)
+      drawMandel(image)
       println((System.nanoTime()-start)/1e9)
+
+      onMouseClicked = (me: MouseEvent) => {
+        val clickReal = rmin + me.x * (rmax - rmin) / image.width()
+        val clickImaginary = imin + me.y * (imax - imin) / image.height()
+        new Julia(Complex(clickReal, clickImaginary)).show()
+      }
     }
   }
 
-  def drawMandel(image: WritableImage, rmin: Double, rmax: Double, imin: Double, imax: Double): Unit = {
+  def drawMandel(image: WritableImage): Unit = {
     val writer = image.pixelWriter
     for (x <- (0 until image.width().toInt).par; y <- 0 until image.height().toInt) {
       val c = Complex(rmin + x*(rmax-rmin)/image.width(), imin + y*(imax-imin)/image.height())
       val cnt = mandelCount(c)
-      val color = if (cnt == maxCount) Color.Magenta else Color(0,math.sqrt(cnt.toDouble/maxCount),math.sqrt(cnt.toDouble/maxCount), 1.0)
+      val color = countToColor(cnt)
       writer.setColor(x, y, color)
     }
+  }
+
+  def countToColor(cnt: Int): Color = {
+    if (cnt < maxCount) Color(math.log(cnt)/logMax, 0.0, 1.0 - math.log(cnt)/logMax, 1.0) else Color.Black
   }
 
   def mandelCount(c: Complex): Int = {
