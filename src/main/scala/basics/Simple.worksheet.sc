@@ -18,3 +18,7 @@ capitals(stateCodes(i))
 for (i <- (1 to 1000).par) yield i*i
 
 "One" -> 1
+
+case class TempData(high: Double)
+val data = Array(TempData(90), TempData(80))
+data.par.map(_.high).sum / data.length

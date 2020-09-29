@@ -5,25 +5,32 @@ import scalafx.scene.Scene
 import scalafx.scene.image.WritableImage
 import scalafx.scene.image.ImageView
 import scalafx.scene.paint.Color
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scalafx.application.Platform
 
 class Julia(c: Complex) extends Stage {
   title = "Julia: " + c
   scene = new Scene(1000, 1000) {
     val image = new WritableImage(1000, 1000)
     content = new ImageView(image)
-    val start = System.nanoTime()
     fillImage(image, -1.0, 1.0, -1.0, 1.0)
-    println((System.nanoTime() - start)*1e-9)
   }
-
+  
   def fillImage(image: WritableImage, rmin: Double, rmax: Double, imin: Double, imax: Double): Unit = {
+    val start = System.nanoTime()
     val writer = image.pixelWriter
-    for (x <- 0 until image.width().toInt; y <- 0 until image.height().toInt) {
-      val c = Complex(rmin + x * (rmax-rmin) / image.width(), imin + y * (imax-imin) / image.height())
-      val cnt = juliaCount(c)
-      val color = countToColor(cnt)
-      writer.setColor(x, y, color)
+    val futures = for (x <- 0 until image.width().toInt) yield Future {
+      for (y <- 0 until image.height().toInt) yield {
+        val c = Complex(rmin + x * (rmax-rmin) / image.width(), imin + y * (imax-imin) / image.height())
+        val cnt = juliaCount(c)
+        (x, y, countToColor(cnt))
+      }
     }
+    val futures2 = for (f <- futures) yield {
+      f.map(col => Platform.runLater(for ((x, y, color) <- col) writer.setColor(x, y, color)))
+    }
+    Future.sequence(futures2).foreach(_ => println((System.nanoTime() - start)*1e-9))
   }
 
   def countToColor(cnt: Int): Color = {

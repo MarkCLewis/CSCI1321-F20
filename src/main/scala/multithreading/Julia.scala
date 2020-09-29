@@ -5,6 +5,8 @@ import scalafx.scene.Scene
 import scalafx.scene.image.WritableImage
 import scalafx.scene.image.ImageView
 import scalafx.scene.paint.Color
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class Julia(c: Complex) extends Stage {
   title = "Julia: " + c
@@ -18,12 +20,19 @@ class Julia(c: Complex) extends Stage {
 
   def fillImage(image: WritableImage, rmin: Double, rmax: Double, imin: Double, imax: Double): Unit = {
     val writer = image.pixelWriter
-    for (x <- 0 until image.width().toInt; y <- 0 until image.height().toInt) {
-      val c = Complex(rmin + x * (rmax-rmin) / image.width(), imin + y * (imax-imin) / image.height())
-      val cnt = juliaCount(c)
-      val color = countToColor(cnt)
-      writer.setColor(x, y, color)
+    val futures = for (x <- 0 until image.width().toInt) yield Future {
+      for (y <- 0 until image.height().toInt) yield {
+        val c = Complex(rmin + x * (rmax-rmin) / image.width(), imin + y * (imax-imin) / image.height())
+        val cnt = juliaCount(c)
+        (x, y, countToColor(cnt))
+      }
     }
+    val futures2 = for (f <- futures) yield {
+      f.map { col =>
+        for ((x, y, color) <- col) writer.setColor(x, y, color)
+      }
+    }
+    Future.sequence(futures2).foreach(_ => println("Done"))
   }
 
   def countToColor(cnt: Int): Color = {

@@ -1,12 +1,17 @@
 package mud
 
 import scala.io.Source
+import akka.actor.Actor
 
-class Room(name: String, desc: String, private var items: List[Item], exits: Array[Int]) {
+class Room(name: String, desc: String, private var items: List[Item], exits: Array[Int]) extends Actor {
+    def receive = {
+        case m => println("Unhandled message in Room: " + m)
+    }
+
     def description(): String = ???
 
-    def getExit(dir: Int): Option[Room] = {
-        if (exits(dir) == -1) None else Some(Room.rooms(exits(dir)))
+    def getExit(dir: Int): Option[Room] = { ???
+        //if (exits(dir) == -1) None else Some(Room.rooms(exits(dir)))
     }
     
     def getItem(itemName: String): Option[Item] = {
@@ -23,21 +28,5 @@ class Room(name: String, desc: String, private var items: List[Item], exits: Arr
 }
 
 object Room {
-    val rooms = readRooms()
-
-    def readRooms(): Array[Room] = {
-        val source = Source.fromFile("map.txt")
-        val lines = source.getLines()
-        val r = Array.fill(lines.next().toInt)(readRoom(lines))
-        source.close()
-        r
-    }
-
-    def readRoom(lines: Iterator[String]): Room = {
-        val name = lines.next()
-        val desc = lines.next()
-        val items = List.fill(lines.next().toInt)(Item(lines.next(), lines.next()))
-        val exits = lines.next().split(",").map(_.toInt)
-        new Room(name, desc, items, exits)
-    }
+    
 }
