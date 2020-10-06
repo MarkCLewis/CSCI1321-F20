@@ -1,0 +1,24 @@
+<world>
+  <room keyword="csi257" name="CSI 257">
+    <description>
+A room with many computers and the lingering smell of sorrow.
+Another line
+Yet another line.
+    </description>
+    <item name="Chair">Something you sit on.</item>
+    <item name="Computer">The most powerful tool in the Universe!</item>
+    <exits>-1,hallway,-1,-1,-1,-1</exits>
+  </room>
+  <room keyword="hallway" name="Hallway">
+    <description>
+This is a long room that connectes other rooms.
+    </description>
+    <exits>csi257,-1,broadway,-1,-1,-1</exits>
+  </room>
+  <room keyword="broadway" name="Broadway">
+    <description>
+A big long hall.
+    </description>
+    <exits>-1,-1,-1,hallway,-1,-1</exits>
+  </room>
+</world>

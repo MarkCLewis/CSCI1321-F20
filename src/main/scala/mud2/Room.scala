@@ -2,16 +2,23 @@ package mud2
 
 import scala.io.Source
 import akka.actor.Actor
+import akka.actor.ActorRef
 
-class Room(name: String, desc: String, private var items: List[Item], exits: Array[Int]) extends Actor {
+class Room(name: String, desc: String, private var items: List[Item], exitKeys: Array[String]) extends Actor {
+    var exits: Array[Option[ActorRef]] = null
+
+    import Room._
     def receive = {
+        case LinkExits(rooms) => exits = exitKeys.map(key => rooms.get(key))
+        case GetDescription => sender ! Player.PrintMessage(description())
+        case GetItem(itemName) => sender ! Player.TakeItem(getItem(itemName))
         case m => println("Unhandled message in Room: " + m)
     }
 
     def description(): String = ???
 
-    def getExit(dir: Int): Option[Room] = {
-        ??? //if (exits(dir) == -1) None else Some(Room.rooms(exits(dir)))
+    def getExit(dir: Int): Option[ActorRef] = {
+        exits(dir)
     }
 
     def getItem(itemName: String): Option[Item] = {
@@ -27,5 +34,7 @@ class Room(name: String, desc: String, private var items: List[Item], exits: Arr
 }
 
 object Room {
-    
+    case class LinkExits(rooms: Map[String, ActorRef])
+    case object GetDescription
+    case class GetItem(itemName: String)
 }

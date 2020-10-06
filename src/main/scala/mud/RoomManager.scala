@@ -7,21 +7,21 @@ import akka.actor.ActorRef
 
 class RoomManager extends Actor {
   val rooms = readRooms()
+  println(rooms)
+  for (child <- context.children) child ! Room.LinkExits(rooms)
 
   def readRooms(): Map[String, ActorRef] = {
-    val source = Source.fromFile("map.txt")
-    val lines = source.getLines()
-    val r = Array.fill(lines.next().toInt)(readRoom(lines)).toMap
-    source.close()
+    val roomXML = xml.XML.loadFile("map.xml")
+    val r = (roomXML \ "room").map(readRoom).toMap
     r
   }
 
-  def readRoom(lines: Iterator[String]): (String, ActorRef) = {
-    val key = lines.next()
-    val name = lines.next()
-    val desc = lines.next()
-    val items = List.fill(lines.next().toInt)(Item(lines.next(), lines.next()))
-    val exits = lines.next().split(",").map(_.toInt)
+  def readRoom(node: xml.Node): (String, ActorRef) = {
+    val key = (node \ "@keyword").text
+    val name = (node \ "@name").text
+    val desc = (node \ "description").text.trim
+    val items = (node \ "item").map(n => Item((n \ "@name").text, n.text)).toList
+    val exits = (node \ "exits").text.split(",")
     key -> context.actorOf(Props(new Room(name, desc, items, exits)), key)
   }
 
