@@ -26,7 +26,7 @@ class RoomManager extends Actor {
   }
 
   def receive = {
-    case m => println("Unhandled message in Room: " + m)
+    case m => println("Unhandled message in RoomManager: " + m)
   }
 
 }
