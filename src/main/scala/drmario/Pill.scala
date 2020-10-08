@@ -18,4 +18,13 @@ class Pill(val cells: List[PillPiece]) extends BoardElement {
       else this
     }
   }
+
+  def supported(grid: Array[Array[Option[(BoardCell, BoardElement)]]]): Boolean = {
+    cells.exists(c => c.y == Board.height-1 || grid(c.x)(c.y+1).map(_._2 != this).getOrElse(false))
+  }
+
+  def removeCells(cs: Set[BoardCell]): Option[BoardElement] = {
+    val cellsLeft = cells.filter(c => !cs.contains(c))
+    if (cellsLeft.isEmpty) None else Some(new Pill(cellsLeft))
+  }
 }
