@@ -1,7 +1,7 @@
 package puyo
 
 object PuyoColor extends Enumeration {
-  val Red, Green, Blue, Purple, Yellow = Value
+  val Red, Green, Blue, Purple, Yellow, Gray = Value
 
   def random: Value = util.Random.nextInt(5) match {
     case 0 => Red
