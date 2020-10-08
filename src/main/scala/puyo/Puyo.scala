@@ -6,4 +6,5 @@ class Puyo(val x: Int, val y: Int, val color: PuyoColor.Value) extends Yo {
   }
 
   def canMove(dx: Int, dy: Int, isSafe: (Int, Int) => Boolean): Boolean = isSafe(x+dx, y+dy)
+  def makePassable(): PassableYo = PassableYo(x, y, color, 0)
 }

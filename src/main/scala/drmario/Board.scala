@@ -23,6 +23,10 @@ class Board {
 
   private var mode = MarioMode.Normal
 
+  def makePassable(): PassableBoard = {
+    PassableBoard(for (elem <- elements; cell <- elem.cells) yield cell.makePassable())
+  }
+
   def update(delay: Double): Unit = {
     mode match {
       case MarioMode.Normal =>

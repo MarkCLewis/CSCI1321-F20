@@ -6,4 +6,6 @@ class PillPiece(val x: Int, val y: Int, val color: MarioColor.Value) extends Boa
   }
 
   def canMove(dx: Int, dy: Int, isClear: (Int, Int) => Boolean): Boolean = isClear(x+dx, y+dy)
+
+  def makePassable(): PassableCell = PassableCell(x, y, color, 1)
 }

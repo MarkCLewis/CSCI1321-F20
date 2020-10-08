@@ -22,6 +22,10 @@ class Board {
 
   val offsets = List((-1, 0), (1, 0), (0, -1), (0, 1))
 
+  def makePassable(): PassableBoard = {
+    PassableBoard(yos.map(_.makePassable()))
+  }
+
   def update(delay: Double): Unit = {
     state match {
     case GameState.DroppingChain =>
