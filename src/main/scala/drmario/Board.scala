@@ -92,6 +92,18 @@ class Board {
     }
 
     // Horizontal
+    for (y <- 0 until height) {
+      var matching = List[BoardCell]()
+      for (x <- 0 until width) {
+        if (grid(x)(y).map(t => matching.isEmpty || t._1.color == matching.head.color).getOrElse(false)) matching ::= grid(x)(y).get._1
+        else {
+          if (matching.length >= 4) victims :::= matching
+          matching = grid(x)(y).map(_._1 :: Nil).getOrElse(Nil)
+        }
+      }
+      if (matching.length >= 4) victims :::= matching
+    }
+
     val vset = victims.toSet
     _elements = _elements.flatMap(_.removeCells(vset))
     victims.nonEmpty
