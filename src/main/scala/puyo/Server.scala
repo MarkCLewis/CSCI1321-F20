@@ -11,8 +11,7 @@ case class ConnectedPlayer(board: Board, sock: Socket, in: ObjectInputStream, ou
 
 object Server extends App {
   private val queue = new java.util.concurrent.LinkedBlockingQueue[ConnectedPlayer]()
-  private var connections = List[ConnectedPlayer]()
-
+  
   val ss = new ServerSocket(8080)
   Future {
     while (true) {
@@ -22,19 +21,51 @@ object Server extends App {
       queue.put(ConnectedPlayer(new Board, sock, in, out))
     }
   }
-
+  
+  private var connections = List[ConnectedPlayer]()
   var lastTime = -1L
+  private var sendDelay = 0.0
+  val sendInterval = 0.01
   while (true) {
     while (!queue.isEmpty()) {
       connections ::= queue.take()
     }
     val time = System.nanoTime()
     if (lastTime >= 0) {
+      var sendBoards = false
       val delay = (time - lastTime) / 1e9
-      for (connection <- connections) {
-        connection.board.update(delay)
+      sendDelay += delay
+      if (sendDelay > sendInterval) {
+        sendBoards = true
+        sendDelay = 0.0
       }
-      // send passable board to the client
+      for (connection <- connections) {
+        if (connection.in.available() > 0) {
+          connection.in.readInt() match {
+            case PressReleaseInfo.Pressed =>
+              connection.in.readInt() match {
+                case PressReleaseInfo.Left => connection.board.leftPressed()
+                case PressReleaseInfo.Right => connection.board.rightPressed()
+                case PressReleaseInfo.Up => connection.board.upPressed()
+                case PressReleaseInfo.Down => connection.board.downPressed()
+                case _ =>
+              }
+            case PressReleaseInfo.Released =>
+              connection.in.readInt() match {
+                case PressReleaseInfo.Left => connection.board.leftReleased()
+                case PressReleaseInfo.Right => connection.board.rightReleased()
+                case PressReleaseInfo.Up => connection.board.upReleased()
+                case PressReleaseInfo.Down => connection.board.downReleased()
+                case _ =>
+              }
+          }
+        }
+        connection.board.update(delay)
+        if (sendBoards) {
+          val pb = connection.board.makePassable()
+          connection.out.writeObject(pb)
+        }
+      }
     }
     lastTime = time
   }
