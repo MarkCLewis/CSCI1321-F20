@@ -44,7 +44,7 @@ object Server extends App {
         sendDelay = 0.0
       }
       for (p <- players) {
-        println(p.in.available())
+        //println(p.in.available())
         if (p.in.available() > 0) {
           p.in.readInt() match {
             case PressReleaseInfo.Pressed => 
