@@ -9,7 +9,7 @@ class TestMyBuffer {
   var seq: mutable.Buffer[Int] = null
 
   @Before def initSequence: Unit = {
-    seq = new SinglyLL[Int]()
+    seq = new DoublyLL[Int]()
   }
 
   @Test def emptyOnCreate: Unit = {
@@ -31,10 +31,10 @@ class TestMyBuffer {
   }
 
   @Test def addUpdateGetTest: Unit = {
-    seq.insert(0, 0)
-    seq.insert(1, 0)
-    seq.insert(2, 0)
-    seq.insert(3, 0)
+    seq += 0
+    seq += 0
+    seq += 0
+    seq += 0
     assertEquals(4, seq.length)
     seq(0) = 9
     seq(1) = 8

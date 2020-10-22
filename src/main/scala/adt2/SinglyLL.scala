@@ -103,5 +103,4 @@ class SinglyLL[A] extends mutable.Buffer[A] {
       tmp
     }
   }
-
 }

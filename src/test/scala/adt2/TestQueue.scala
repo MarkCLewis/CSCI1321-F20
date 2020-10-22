@@ -1,4 +1,4 @@
-package adt
+package adt2
 
 import org.junit._
 import org.junit.Assert._

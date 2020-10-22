@@ -9,7 +9,7 @@ class TestMutableSeq {
   var seq: MutableSeq[Int] = null
 
   @Before def initSequence: Unit = {
-    seq = new SinglyLL[Int]()
+    seq = new DoublyLL[Int]()
   }
 
   @Test def emptyOnCreate: Unit = {
