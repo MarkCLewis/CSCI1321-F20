@@ -24,7 +24,7 @@ class SortedArrayPQ[A: ClassTag](highestP: (A,A) => Boolean) extends MyPriorityQ
   def dequeue(): A = {
     assert(numElems>0)
     val ret = data(0)
-    for(i <- 1 until numElems) data(i-1) = data(i)
+    for(i <- 0 until numElems) data(i) = data(i+1)
     numElems-=1
     ret
   }
