@@ -16,11 +16,12 @@ object Mandelbrot extends JFXApp {
   val rmax = 0.5
   val imin = -1.0
   val imax = 1.0
+  val imageSize = 1000
 
   stage = new JFXApp.PrimaryStage {
     title = "Mandelbrot"
-    scene = new Scene(1000, 1000) {
-      val image = new WritableImage(1000, 1000)
+    scene = new Scene(imageSize, imageSize) {
+      val image = new WritableImage(imageSize, imageSize)
       content = new ImageView(image)
       val start = System.nanoTime()
       fillImage(image)

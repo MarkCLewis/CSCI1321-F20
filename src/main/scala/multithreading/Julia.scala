@@ -10,8 +10,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class Julia(c: Complex) extends Stage {
   title = "Julia: " + c
-  scene = new Scene(1000, 1000) {
-    val image = new WritableImage(1000, 1000)
+  scene = new Scene(Mandelbrot.imageSize, Mandelbrot.imageSize) {
+    val image = new WritableImage(Mandelbrot.imageSize, Mandelbrot.imageSize)
     content = new ImageView(image)
     val start = System.nanoTime()
     fillImage(image, -1.0, 1.0, -1.0, 1.0)
