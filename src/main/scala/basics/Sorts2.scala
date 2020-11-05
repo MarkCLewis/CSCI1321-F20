@@ -26,4 +26,12 @@ object Sorts2 extends App {
   bubbleSort2(nums)(_ < _)
   println(nums.mkString(" "))
 
+  def quicksort[A](lst: List[A])(lt: (A, A) => Boolean): List[A] = lst match {
+    case Nil | _ :: Nil => lst
+    case pivot :: rest =>
+      val (less, greater) = rest.partition(x => lt(x, pivot))
+      quicksort(less)(lt) ::: (pivot :: quicksort(greater)(lt))
+  }
+
+  println(quicksort(List.fill(20)(util.Random.nextInt(100)))(_<_))
 }
