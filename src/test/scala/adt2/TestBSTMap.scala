@@ -47,4 +47,43 @@ class TestBSTMap {
     bst.inorder((k, v) => buf += k)
     assertEquals(mutable.Buffer("a", "b", "c", "d", "e"), buf)
   }
+
+  @Test def addGetMany = {
+    val data = Array.fill(1000)(util.Random.nextString(10), util.Random.nextInt)
+    for (kv <- data) bst.add(kv._1, kv._2)
+    for ((key, value) <- data) assertEquals(value, bst(key))
+  }
+
+  @Test def addTraverseMany = {
+    val data = Array.fill(1000)(util.Random.nextString(10), util.Random.nextInt)
+    for (kv <- data) bst.add(kv._1, kv._2)
+    for (((key, value), kv) <- data.sorted.zip(bst.iterator.toSeq)) assertEquals(value, kv._2)
+  }
+
+  @Test def addRemoveFew = {
+    bst.add("one", 1)
+    bst.add("two", 2)
+    bst.add("three", 3)
+    bst.add("four", 4)
+    bst.add("five", 5)
+    assertEquals(Some(1), bst.remove("one"))
+    assertEquals(Some(3), bst.remove("three"))
+    assertEquals(2, bst("two"))
+    assertEquals(4, bst("four"))
+    assertEquals(5, bst("five"))
+  }
+
+  @Test def addRemoveGetMany = {
+    val data = Array.fill(1000)(util.Random.nextString(10), Option(util.Random.nextInt))
+    for (kv <- data) bst.add(kv._1, kv._2.get)
+    for (_ <- 1 to 50) {
+      val index = util.Random.nextInt(data.length)
+      assertEquals(data(index)._2, bst.remove(data(index)._1))
+      data(index) = (data(index)._1, None)
+    }
+    for ((key, value) <- data) {
+      if(value.nonEmpty) assertEquals(value.get, bst(key))
+    }
+  }
+
 }

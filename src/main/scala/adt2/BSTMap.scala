@@ -28,7 +28,43 @@ class BSTMap[K, V](lt: (K, K) => Boolean) extends MyMap[K, V] {
     root = helper(root)
   }
 
-  def remove(key: K): V = ???
+  def remove(key: K): Option[V] = {
+    def grabLargest(n: Node): (Node, Node) = {
+      if (n.right != null) {
+        val (link, largest) = grabLargest(n.right)
+        n.right = link
+        (n, largest)
+      } else (n.left, n)
+    }
+
+    def findVictim(n: Node): (Node, Option[V]) = {
+      if (n == null) (null, None)
+      else if (key == n.kv._1) {
+        if (n.left == null) (n.right, Some(n.kv._2))
+        else if (n.right == null) (n.left, Some(n.kv._2))
+        else {
+          val (link, largestLeft) = grabLargest(n.left)
+          largestLeft.left = link
+          largestLeft.right = n.right
+          (largestLeft, Some(n.kv._2))
+        }
+      } else {
+        if (lt(key, n.kv._1)) {
+          val (link, v) = findVictim(n.left)
+          n.left = link
+          (n, v)
+        } else {
+          val (link, v) = findVictim(n.right)
+          n.right = link
+          (n, v)
+        }
+      }
+    }
+
+    val (link, v) = findVictim(root)
+    root = link
+    v
+  }
 
   def iterator = new Iterator[(K, V)] {
     val stack = new mutable.Stack[Node]()

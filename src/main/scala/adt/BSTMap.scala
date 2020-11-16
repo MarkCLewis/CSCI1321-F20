@@ -6,7 +6,36 @@ class BSTMap[K, V](lt: (K, K) => Boolean) extends mutable.Map[K, V] {
   private class Node(var key: K, var value: V, var left: Node, var right: Node)
   private var root: Node = null
 
-  def -=(key: K) = ???
+  def -=(key: K) = {
+    def grabLargest(n: Node): (Node, Node) = {
+      if (n.right != null) {
+        val (link, largest) = grabLargest(n.right)
+        n.right = link
+        (n, largest)
+      } else (n.left, n)
+    }
+
+    def findVictim(n: Node): Node = {
+      if (n == null) null
+      else if (key == n.key) {
+        if (n.left == null) n.right
+        else if (n.right == null) n.left
+        else {
+          val (link, largestLeft) = grabLargest(n.left)
+          largestLeft.left = link
+          largestLeft.right = n.right
+          largestLeft
+        }
+      } else {
+        if (lt(key, n.key)) n.left = findVictim(n.left)
+        else n.right = findVictim(n.right)
+        n
+      }
+    }
+
+    root = findVictim(root)
+    this
+  }
 
   def +=(kv: (K, V)) = {
     def helper(rover: Node): Node = {
