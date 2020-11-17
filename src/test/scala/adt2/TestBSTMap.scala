@@ -33,6 +33,17 @@ class TestBSTMap {
     bst.add("e", 5)
     bst.add("d", 4)
     val buf = mutable.Buffer[String]()
+    bst.preorder((k, v) => buf += k)
+    assertEquals(mutable.Buffer("c", "b", "a", "e", "d"), buf)
+  }
+
+  @Test def testpostOrder = {
+    bst.add("c", 3)
+    bst.add("b", 2)
+    bst.add("a", 1)
+    bst.add("e", 5)
+    bst.add("d", 4)
+    val buf = mutable.Buffer[String]()
     bst.postorder((k, v) => buf += k)
     assertEquals(mutable.Buffer("a", "b", "d", "e", "c"), buf)
   }
@@ -57,7 +68,10 @@ class TestBSTMap {
   @Test def addTraverseMany = {
     val data = Array.fill(1000)(util.Random.nextString(10), util.Random.nextInt)
     for (kv <- data) bst.add(kv._1, kv._2)
-    for (((key, value), kv) <- data.sorted.zip(bst.iterator.toSeq)) assertEquals(value, kv._2)
+    for (((key, value), kv) <- data.sorted.zip(bst.iterator.toSeq)) {
+      assertEquals(key, kv._1)
+      assertEquals(value, kv._2)
+    }
   }
 
   @Test def addRemoveFew = {

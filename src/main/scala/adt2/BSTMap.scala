@@ -72,6 +72,7 @@ class BSTMap[K, V](lt: (K, K) => Boolean) extends MyMap[K, V] {
       stack.push(n)
       pushAllLeft(n.left)
     }
+    pushAllLeft(root)
     def hasNext: Boolean = stack.nonEmpty
     def next(): (K, V) = {
       val top = stack.pop()

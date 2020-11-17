@@ -11,7 +11,7 @@ class TestBSTMap {
   @Before def init = bst = new BSTMap[String, Int](_ < _)
 
   @Test def emptyOnStart = {
-    //assertTrue(bst.isEmpty)
+    assertTrue(bst.isEmpty)
   }
 
   @Test def addGetOne = {

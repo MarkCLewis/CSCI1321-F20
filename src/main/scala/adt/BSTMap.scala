@@ -66,8 +66,13 @@ class BSTMap[K, V](lt: (K, K) => Boolean) extends mutable.Map[K, V] {
       stack.push(n)
       pushAllLeft(n.left)
     }
+    pushAllLeft(root)
     def hasNext: Boolean = stack.nonEmpty
-    def next(): (K, V) = ???
+    def next(): (K, V) = {
+      val n = stack.pop()
+      pushAllLeft(n.right)
+      n.key -> n.value
+    }
   }
 
   def preorder(visit: (K, V) => Unit) = {
