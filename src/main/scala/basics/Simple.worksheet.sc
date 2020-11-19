@@ -35,3 +35,14 @@ val xmlData = <entities> <entity type="player" x="3" y="2"/> <entity type="ghost
 
 (xmlData \ "entity").count(e => (e \ "@x").text.toInt < 5)
 (xmlData \\ "@x").count(_.text.toInt < 5)
+
+
+val lines = List("1. first","garbage","2. second", "19. a big number")
+def numberedLines(lines: List[String]): Map[Int, String] = {
+  val regex = """(\d+)\.(.*)""".r
+  (for(regex(num, rest) <- lines) yield (num.toInt, rest)).toMap
+}
+numberedLines(lines)
+
+"5.45e2".toDouble
+
