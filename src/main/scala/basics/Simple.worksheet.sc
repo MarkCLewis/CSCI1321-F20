@@ -46,3 +46,8 @@ numberedLines(lines)
 
 "5.45e2".toDouble
 
+val firstRE = """[A-Z][a-z]+"""
+val lastRE = """(Mac )?[A-Z][a-z]+"""
+val ageRE = """\d{1,3}"""
+val fullRegex = s"($firstRE), ($lastRE): ($ageRE)".r
+
