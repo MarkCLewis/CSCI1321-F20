@@ -2,7 +2,7 @@ package adt
 
 import scala.reflect.ClassTag
 
-class BinaryHeap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQueue[A] {
+class BinaryHeapSwap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQueue[A] {
   private var heap = Array.fill(10)(null.asInstanceOf[A])
   private var back = 1
 
@@ -10,18 +10,19 @@ class BinaryHeap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQue
     val ret = heap(1)
     var stone = 1
     back -= 1
-    val last = heap(back)
+    heap(1) = heap(back)
     var flag = true
     while (flag && stone * 2 < back) {
       var higherChild = stone * 2
       if (higherChild + 1 < back && higherP(heap(higherChild + 1), heap(higherChild)))
         higherChild += 1
-      if (higherP(heap(higherChild), last)) {
-        heap(stone) = heap(higherChild)
+      if (higherP(heap(higherChild), heap(stone))) {
+        val tmp = heap(higherChild)
+        heap(higherChild) = heap(stone)
+        heap(stone) = tmp
         stone = higherChild
       } else flag = false
     }
-    heap(stone) = last
     ret
   }
 
@@ -30,11 +31,13 @@ class BinaryHeap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQue
       heap = Array.tabulate(heap.length*2)(i => if (i < heap.length) heap(i) else null.asInstanceOf[A])
     }
     var bubble = back
+    heap(back) = a
     while (bubble > 1 && higherP(a, heap(bubble/2))) {
+      val tmp = heap(bubble)
       heap(bubble) = heap(bubble/2)
+      heap(bubble/2) = tmp
       bubble /= 2
     }
-    heap(bubble) = a
     back += 1
   }
 

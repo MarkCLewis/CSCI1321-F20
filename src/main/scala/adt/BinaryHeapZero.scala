@@ -2,18 +2,18 @@ package adt
 
 import scala.reflect.ClassTag
 
-class BinaryHeap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQueue[A] {
+class BinaryHeapZero[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQueue[A] {
   private var heap = Array.fill(10)(null.asInstanceOf[A])
-  private var back = 1
+  private var back = 0
 
   def dequeue(): A = {
-    val ret = heap(1)
-    var stone = 1
+    val ret = heap(0)
+    var stone = 0
     back -= 1
     val last = heap(back)
     var flag = true
-    while (flag && stone * 2 < back) {
-      var higherChild = stone * 2
+    while (flag && (stone+1)*2-1 < back) {
+      var higherChild = (stone+1)*2-1
       if (higherChild + 1 < back && higherP(heap(higherChild + 1), heap(higherChild)))
         higherChild += 1
       if (higherP(heap(higherChild), last)) {
@@ -30,15 +30,15 @@ class BinaryHeap[A : ClassTag](higherP: (A, A) => Boolean) extends MyPriorityQue
       heap = Array.tabulate(heap.length*2)(i => if (i < heap.length) heap(i) else null.asInstanceOf[A])
     }
     var bubble = back
-    while (bubble > 1 && higherP(a, heap(bubble/2))) {
-      heap(bubble) = heap(bubble/2)
-      bubble /= 2
+    while (bubble > 0 && higherP(a, heap((bubble+1)/2-1))) {
+      heap(bubble) = heap((bubble+1)/2-1)
+      bubble = (bubble+1)/2-1
     }
     heap(bubble) = a
     back += 1
   }
 
-  def isEmpty: Boolean = back == 1
+  def isEmpty: Boolean = back == 0
 
-  def peek: A = heap(1)
+  def peek: A = heap(0)
 }

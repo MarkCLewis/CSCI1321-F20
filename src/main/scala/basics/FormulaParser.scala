@@ -4,7 +4,6 @@ object FormulaParser {
   val nonVals = "+-*/(".toSet
   def parse(formula: String, vars: Map[String, Double]): Double = {
     val f = formula.trim()
-    println(f)
     var i = f.length - 1
     var opLoc = -1
     var parensCnt = 0

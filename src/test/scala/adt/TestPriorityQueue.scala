@@ -8,7 +8,7 @@ class TestPriorityQueue {
   private var pq: MyPriorityQueue[Int] = null
 
   @Before def init = {
-    pq = new UnsortedArrayPQ2[Int](_ < _)
+    pq = new BinaryHeapSwap[Int](_ < _)
   }
 
   @Test def emptyOnInit = {
